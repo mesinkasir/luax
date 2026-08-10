@@ -64,7 +64,7 @@ function yaml.parse(content)
                     table.insert(stack, item)
                     table.insert(indent_stack, indent)
                     table.insert(stack, inner)
-                    table.insert(indent_stack, indent)
+                    table.insert(indent_stack, indent + 1)
                 else
                     table.insert(target._list, value)
                 end
@@ -74,7 +74,7 @@ function yaml.parse(content)
             goto continue
         end
 
-        local key, value = stripped:match("^(.-):%s*(.*)$")
+                local key, value = stripped:match("^([^:]+):%s*(.*)$")
         if key then
             key = key:gsub("^%s*(.-)%s*$", "%1")
             value = value:gsub('^"', ''):gsub('"$', '')
@@ -128,8 +128,6 @@ function yaml.parse(content)
         end
 
         if t._list and not t._is_list_checked then
-            -- kalau t itu sendiri adalah list container yang nempel di parent
-            -- biarin, yang convert parentnya
         end
 
         return t

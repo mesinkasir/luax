@@ -3,57 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@title</title>
-    <meta name="description" content="@description">
-    
-    <!-- Open Graph -->
-    <meta property="og:type" content="@og_type">
-    <meta property="og:title" content="@og_title">
-    <meta property="og:description" content="@og_description">
-    <meta property="og:image" content="@metadata.url@og_image">
-    <meta property="og:url" content="@metadata.url@og_url">
-    <meta property="og:site_name" content="@metadata.title">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@og_title">
-    <meta name="twitter:description" content="@og_description">
-    <meta name="twitter:image" content="@metadata.url@og_image">
-    @if metadata.twitter_user
-        <meta name="twitter:site" content="@metadata.twitter_user">
-    @end
-    
-    <!-- Favicon -->
-    @if metadata.favicon
-        <link rel="icon" href="@metadata.url@metadata.favicon">
-    @end
-    
-    <link rel="stylesheet" href="@metadata.url/css/style.css">
-    
-    <!-- JSON-LD -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "@json_ld_type",
-        "headline": "@json_ld_headline",
-        "description": "@json_ld_description",
-        "url": "@json_ld_url",
-        "datePublished": "@json_ld_date",
-        "dateModified": "@json_ld_date",
-        "author": {
-            "@type": "Person",
-            "name": "@json_ld_author"
-        }
-    }
-    </script>
+   
+@if title
+<title>@title</title>
+@else
+<title>@metadata.title</title>
+@end
+
+@if description
+<meta name="description" content="@description">
+@else
+<meta name="description" content="@metadata.description">
+@end
+
+@if og_type
+<meta property="og:type" content="@og_type">
+@else
+<meta property="og:type" content="website">
+@end
+
+@if og_title
+<meta property="og:title" content="@og_title">
+@else
+  @if title
+  <meta property="og:title" content="@title">
+  @else
+  <meta property="og:title" content="@metadata.title">
+  @end
+@end
+
+@if og_description
+<meta property="og:description" content="@og_description">
+@else
+  @if description
+  <meta property="og:description" content="@description">
+  @else
+  <meta property="og:description" content="@metadata.description">
+  @end
+@end
+
+@if og_image
+<meta property="og:image" content="@metadata.url@og_image">
+@else
+  @if image
+  <meta property="og:image" content="@metadata.url@image">
+  @else
+  <meta property="og:image" content="@metadata.url@metadata.image">
+  @end
+@end
+
+<meta property="og:url" content="@metadata.url@current_url">
+<meta property="og:site_name" content="@metadata.title">
+<meta name="twitter:card" content="summary_large_image">
+
+@if og_title
+<meta name="twitter:title" content="@og_title">
+@else
+  @if title
+  <meta name="twitter:title" content="@title">
+  @else
+  <meta name="twitter:title" content="@metadata.title">
+  @end
+@end
+
+@if og_description
+<meta name="twitter:description" content="@og_description">
+@else
+  @if description
+  <meta name="twitter:description" content="@description">
+  @else
+  <meta name="twitter:description" content="@metadata.description">
+  @end
+@end
+
+@if og_image
+<meta name="twitter:image" content="@metadata.url@og_image">
+@else
+  @if image
+  <meta name="twitter:image" content="@metadata.url@image">
+  @else
+  <meta name="twitter:image" content="@metadata.url@metadata.image">
+  @end
+@end
+
+<meta name="generator" content="LUAX v1.2 - LUA Static Site Generator by Axcora">
+
+@if metadata.twitter_user
+<meta name="twitter:site" content="@metadata.twitter_user">
+@end
+
+@if metadata.favicon
+<link rel="icon" href="@metadata.url@metadata.favicon">
+@end
+
+<link rel="canonical" href="@metadata.url@current_url">
+
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "@@json_ld_type",
+  "headline": "@title",
+  "description": "@description",
+  "url": "@metadata.url@current_url",
+  "datePublished": "@date",
+  "dateModified": "@date",
+  "image": "@metadata.url@og_image",
+  "author": {
+    "@@type": "Person",
+    "name": "@author"
+  }
+}
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/axcora-css@1.0.1/axcora.min.css">
+<link rel="stylesheet" href="@metadata.url/css/style.css">
 </head>
 <body>
     @include(header)
-    
-    
+        
         @content
     
     
     @include(footer)
+	<script src="https://cdn.jsdelivr.net/npm/axcora-js@1.0.1/axcora.min.js"></script>
 </body>
 </html>

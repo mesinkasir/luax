@@ -1,48 +1,38 @@
 @layout(default)
 
-
 <main class="container">
     <section class="row">
         <div class="col-md-12 p-3 p-md-5 text-center mt-3">
-             <h1 class="display-4"><a href="@metadata.url@og_url">
-            @metadata.blog.title
-            </a></h1>
-            <h2 class="lead">@metadata.blog.description</p>
-            </div>
-
-             @if metadata.blog.image
-        <div class="ratio ratio-21x9 mt-1 mb-3 p-3">
-        <img class="img-cover rounded-5 shadow-sm"
-        alt="@metadata.blog.title"
-        width="100%"
-        height="100%"
-        SRC="@metadata.blog.image"/>
+             <h1 class="display-4">@title</h1>
+             <h2 class="lead">@description</h2>
         </div>
-        @end
 
-            <div class="row">
-                @for posts
-                <article class="col-md-4 p-3">
+        <div class="row">
+            @for posts
+            <article class="col-md-4 p-3">
                 <div class="p-3 shadow-sm rounded-5 bg-light">
-                <a href="@url" title="@title">
-                        <img class="img-fluid rounded-5"
-                            alt="@title" 
-                            width="100%" 
-                            height="100%"
-                            src="@image" />
+                    
+					<a href="@url" title="@title">
+                        <img class="img-fluid rounded-5" alt="@title" width="100%" height="100%" src="@image" />
                     </a>
+					
                     <div class="p-3">
-                    <h2>
-                        <a href="@url">@title</a>
-                    </h2>
-                    <p class="post-excerpt">@excerpt</p>
-                   </div>
-                   </div>
-                </article>
-                @end
-            
-            @pagination
+                        <h3 class="h5 fw-bold"><a href="@url">@title</a></h3>
+                        <p class="post-excerpt">@excerpt</p>
+                    </div>
+                </div>
+            </article>
+            @end
+        </div>
 
+        <div class="col-12 d-flex justify-content-between mt-5">
+            @if pagination.prev_url
+            <a href="@pagination.prev_url" class="btn btn-primary rounded-5">← Newer</a>
+            @end
+            <span class="btn btn-light rounded-5 disabled">Page @pagination.current_page / @pagination.total_pages</span>
+            @if pagination.next_url
+            <a href="@pagination.next_url" class="btn btn-primary rounded-5">Older →</a>
+            @end
         </div>
     </section>
 </main>

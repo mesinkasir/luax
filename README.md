@@ -1,4 +1,4 @@
-# LUAX SSG
+# LUAX SSG V1.2
 
 **Static Site Generator built with Lua**
 

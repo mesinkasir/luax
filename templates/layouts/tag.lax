@@ -1,42 +1,26 @@
-@layout(default)
+@layout("default.lax")
 
 <main class="container">
     <section class="row">
         <div class="col-md-12 p-3 p-md-5 text-center mt-3">
-            <h1 class="display-4">Posts tagged: #@tag</h1>
-            <h2 class="lead">Total posts: @post_count</h2>
+            <h1 class="display-4">#@tag</h1>
+            <h2 class="lead">@count posts with this tag</h2>
         </div>
-        
-        <div class="row">
+
+        <div class="col-md-8 mx-auto">
             @for posts
-                <article class="col-md-4 p-3">
-                    <div class="p-3 shadow-sm rounded-5 bg-light">
-                        <a href="@url" title="@title">
-                            <img class="img-fluid rounded-5"
-                                alt="@title" 
-                                width="100%" 
-                                height="100%"
-                                src="@image" />
-                        </a>
-                        <div class="p-3">
-                            <h2>
-                                <a href="@url">@title</a>
-                            </h2>
-                            <div class="post-meta">
-                                <time datetime="@date">@date</time>
-                                @if author
-                                    <span class="post-author">by @author</span>
-                                @end
-                            </div>
-                            <p class="post-excerpt">@excerpt</p>
-                        </div>
-                    </div>
-                </article>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5><a href="@url">@title</a></h5>
+                    <p>@excerpt</p>
+                    <small>@date</small>
+                </div>
+            </div>
             @end
         </div>
-        
-        <div class="col-md-12 text-center p-3">
-            <a href="/tags" class="btn btn-primary rounded-5">← All Tags</a>
+
+        <div class="col-md-12 text-center mt-4">
+            <a href="/tags/" class="btn btn-primary rounded-5">← All Tags</a>
         </div>
     </section>
 </main>

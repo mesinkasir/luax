@@ -11,11 +11,11 @@ navbar:
     - title: Home
       url: /
     - title: Blog
-      url: /blog.html
+      url: /posts/
     - title: Docs
       url: https://luax.axcora.com
     - title: About
-      url: /about.html
+      url: /about/
 
 home:
   title: LUAX SSG
@@ -41,7 +41,7 @@ footer:
     - title: Home
       url: /
     - title: Blog
-      url: /blog.html
+      url: /posts/
     - title: Docs
       url: https://luax.axcora.com
   nav3:
