@@ -208,9 +208,9 @@ function Lax:render()
                 else repl = process(else_branch, parent_item) end
             else
                 local clean = line:gsub("\r",""):gsub("@for%s+",""):gsub("^%s*(.-)%s*$","%1")
-                local limit = tonumber(clean:match("limit%s*(%d+)"))
+                                local limit = tonumber(clean:match("limit%s*[:=]?%s*(%d+)"))
                 local without_filter = clean:gsub("%s*|.*$","")
-                local without_limit = without_filter:gsub("%s+limit%s*%d+.*$",""):gsub("^%s*(.-)%s*$","%1")
+                local without_limit = without_filter:gsub("%s+limit%s*[:=]?%s*%d+.*$",""):gsub("^%s*(.-)%s*$","%1")
                 local list_name = without_limit:match(" in ([%w_%.%-]+)") or without_limit:match("^([%w_%.%-]+)")
                 if list_name then list_name = list_name:gsub("^%s*(.-)%s*$","%1") end
 
@@ -237,7 +237,7 @@ function Lax:render()
                     if is_array(list) then
                         arr = list
                     else
-                       
+                        -- single map object like mission.card -> treat as 1 item
                         arr = { list }
                     end
                     local max = limit and math.min(limit, #arr) or #arr
