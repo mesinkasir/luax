@@ -1,7 +1,7 @@
-print("========================================")
-print(" 🌐 LUAX SERVER v1.5")
+print("=================================")
+print(" 🌐 LUAX SERVER v2.5")
 print(" https://luax.axcora.com")
-print("========================================\n")
+print("=================================\n")
 
 local port = 8080
 local dist = "dist"
