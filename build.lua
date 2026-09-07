@@ -10,8 +10,10 @@ local c = {
     red = "\27[31m"
 }
 
-print(c.bold..c.magenta.."🚀 LUAX SSG v1.2.7 FIXED"..c.reset)
-print(c.dim.."▶ LAX + Eleventy Style Collections Anywhere"..c.reset.."\n")
+print(c.magenta.."==========================="..c.reset.."")
+print(c.bold..c.yellow.."🚀 LUAX SSG v2.2.7"..c.reset)
+print(c.cyan.."https://luax.axcora.com"..c.reset.."")
+print(c.magenta.."==========================="..c.reset.."\n")
 
 local Lax = dofile("lax.lua")
 local yaml = dofile("yaml.lua")
@@ -75,34 +77,8 @@ end
 local function copy_public()
     local public_dir = "public"
     if not is_dir(public_dir) then return end
-    local has_files = false
-    local p = io.popen('ls -A "'..public_dir..'" 2>/dev/null')
-    if p then
-        local out = p:read("*a")
-        p:close()
-        if out and out:match("%S") then has_files = true end
-    end
-    if is_windows or has_files then
-        
-        if package.config:sub(1,1) == "\\" then
-            local wp = io.popen('dir "'..public_dir..'" /b /a 2>nul')
-            if wp then
-                local o = wp:read("*a")
-                wp:close()
-                if o and o:match("%S") then has_files = true end
-            end
-        end
-    end
-    if not has_files then
-        
-        local f = io.open(public_dir.."/.gitkeep","r")
-        if f then f:close() has_files=false end
-        if not has_files then
-            
-            return
-        end
-    end
-    if package.config:sub(1,1) == "\\" then
+    local is_win = package.config:sub(1,1) == "\\"
+    if is_win then
         os.execute('xcopy "'..public_dir..'" "dist\\" /E /I /Y >nul 2>nul')
     else
         os.execute('mkdir -p dist 2>/dev/null; cp -r "'..public_dir..'"/* "dist/" 2>/dev/null || cp -r "'..public_dir..'"/. "dist/" 2>/dev/null')
