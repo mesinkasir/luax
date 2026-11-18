@@ -966,37 +966,44 @@ end
 
 local function generate_feeds(all_items, global_data)
     local site_url = global_data.url or "https://example.com"
+    site_url = site_url:gsub("/+$", "")
+
+    local function full_url(path)
+        if not path or path == "" then return site_url .. "/" end
+        if path:sub(1, 1) ~= "/" then path = "/" .. path end
+        return site_url .. path
+    end
 
     local sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    sitemap = sitemap..' <url>\n <loc>'..site_url..'</loc>\n <lastmod>'..os.date("%Y-%m-%d")..'</lastmod>\n <changefreq>daily</changefreq>\n <priority>1.0</priority>\n </url>\n'
+    sitemap = sitemap .. ' <url>\n <loc>' .. full_url("/") .. '</loc>\n <lastmod>' .. os.date("%Y-%m-%d") .. '</lastmod>\n <changefreq>daily</changefreq>\n <priority>1.0</priority>\n </url>\n'
 
     for _, item in ipairs(all_items) do
-        sitemap = sitemap..' <url>\n <loc>'..site_url..item.url..'</loc>\n <lastmod>'..item.date..'</lastmod>\n <changefreq>monthly</changefreq>\n <priority>0.8</priority>\n </url>\n'
+        sitemap = sitemap .. ' <url>\n <loc>' .. full_url(item.url) .. '</loc>\n <lastmod>' .. item.date .. '</lastmod>\n <changefreq>monthly</changefreq>\n <priority>0.8</priority>\n </url>\n'
     end
-    sitemap = sitemap..'</urlset>\n'
+    sitemap = sitemap .. '</urlset>\n'
     write_file("dist/sitemap.xml", sitemap)
 
     local rss = '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n'
-    rss = rss..' <channel>\n <title>'..(global_data.title or "LUAX SSG")..'</title>\n <link>'..site_url..'</link>\n'
-    rss = rss..' <description>'..(global_data.description or "")..'</description>\n'
-    rss = rss..' <language>en-us</language>\n <lastBuildDate>'..os.date("%a, %d %b %Y %H:%M:%S +0000")..'</lastBuildDate>\n'
-    rss = rss..' <atom:link href="'..site_url..'feed.xml" rel="self" type="application/rss+xml" />\n'
+    rss = rss .. ' <channel>\n <title>' .. (global_data.title or "LUAX SSG") .. '</title>\n <link>' .. full_url("/") .. '</link>\n'
+    rss = rss .. ' <description>' .. (global_data.description or "") .. '</description>\n'
+    rss = rss .. ' <language>en-us</language>\n <lastBuildDate>' .. os.date("%a, %d %b %Y %H:%M:%S +0000") .. '</lastBuildDate>\n'
+    rss = rss .. ' <atom:link href="' .. full_url("/feed.xml") .. '" rel="self" type="application/rss+xml" />\n'
 
     for _, item in ipairs(all_items) do
         if not item.is_home and item.slug ~= "index" then
-            rss = rss..' <item>\n <title>'..item.title..'</title>\n <link>'..site_url..item.url..'</link>\n'
-            rss = rss..' <description><![CDATA['..(item.excerpt or item.description or "")..']]></description>\n'
-            rss = rss..' <pubDate>'..item.date..'</pubDate>\n <guid>'..site_url..item.url..'</guid>\n </item>\n'
+            rss = rss .. ' <item>\n <title>' .. item.title .. '</title>\n <link>' .. full_url(item.url) .. '</link>\n'
+            rss = rss .. ' <description><![CDATA[' .. (item.excerpt or item.description or "") .. ']]></description>\n'
+            rss = rss .. ' <pubDate>' .. item.date .. '</pubDate>\n <guid>' .. full_url(item.url) .. '</guid>\n </item>\n'
         end
     end
-    rss = rss..' </channel>\n</rss>\n'
+    rss = rss .. ' </channel>\n</rss>\n'
     write_file("dist/feed.xml", rss)
     write_file("dist/rss.xml", rss)
 
-    write_file("dist/robots.txt", 'User-agent: *\nAllow: /\nSitemap: '..site_url..'sitemap.xml\n')
-    write_file("dist/humans.txt", '/* TEAM */\n Architect: AXCORA\n Website: '..site_url..'\n Labs: axcora.com\n/* SITE */\n Generator: LUAX SSG\n Built: '..os.date("%Y-%m-%d %H:%M:%S")..'\n Powered by: Lua + LAX Template\n')
+    write_file("dist/robots.txt", 'User-agent: *\nAllow: /\nSitemap: ' .. full_url("/sitemap.xml") .. '\n')
+    write_file("dist/humans.txt", '/* TEAM */\n Architect: AXCORA\n Website: ' .. full_url("/") .. '\n Labs: axcora.com\n/* SITE */\n Generator: LUAX SSG\n Built: ' .. os.date("%Y-%m-%d %H:%M:%S") .. '\n Powered by: Lua + LAX Template\n')
 
-    print(" "..c.green.."✔"..c.reset.." "..c.dim.."Feeds generated"..c.reset)
+    print(" " .. c.green .. "✔" .. c.reset .. " " .. c.dim .. "Feeds generated" .. c.reset)
 end
 
 local start_time = os.clock()
